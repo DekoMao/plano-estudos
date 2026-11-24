@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plano de Estudos — Target-Q, Uniamérica &amp; PUC Minas</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #09090b;
+      color: #f4f4f5;
+    }
+    .drop-active {
+      background-color: #27272a;
+      outline: 1.5px dashed #14b8a6;
+      outline-offset: -4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased bg-zinc-950 text-zinc-100">
+
+  <div class="flex min-h-screen flex-col lg:flex-row">
+
+    <!-- Sidebar (Desktop) / Compact Top Bar (Mobile) -->
+    <aside class="w-full border-b border-zinc-800 bg-zinc-900 lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-r">
+      <div class="flex h-full flex-col justify-between p-4 lg:p-5">
+        <div>
+          <!-- Brand -->
+          <div class="flex items-center justify-between lg:block">
+            <div>
+              <h1 class="text-base font-semibold tracking-tight text-zinc-100">Plano de Estudos</h1>
+              <p id="side-subtitle" class="text-sm text-zinc-400 mt-0.5">Seg–Sáb · Início 19/11/26</p>
+            </div>
+            <span id="mobile-pct" class="text-sm font-semibold text-teal-400 lg:hidden">0%</span>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="mt-4 flex gap-1 overflow-x-auto lg:mt-6 lg:flex-col lg:gap-1" aria-label="Navegação principal">
+            <button id="nav-dashboard" type="button" class="nav-btn flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors bg-zinc-800 text-zinc-100">
+              <span class="h-1.5 w-1.5 rounded-full bg-teal-400"></span>
+              Dashboard
+            </button>
+            <button id="nav-hoje" type="button" class="nav-btn flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-600"></span>
+              Foco de Hoje
+            </button>
+            <button id="nav-kanban" type="button" class="nav-btn flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-600"></span>
+              Kanban
+            </button>
+            <button id="nav-todo" type="button" class="nav-btn flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-600"></span>
+              To-Do
+            </button>
+            <button id="nav-cronograma" type="button" class="nav-btn flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-colors text-zinc-400 hover:bg-zinc-800/60 hover:text-zinc-100">
+              <span class="h-1.5 w-1.5 rounded-full bg-zinc-600"></span>
+              Cronograma
+            </button>
+          </nav>
+
+          <!-- Compact Progress Summary (Desktop) -->
+          <div class="mt-8 hidden space-y-4 border-t border-zinc-800 pt-5 lg:block">
+            <div>
+              <div class="flex items-center justify-between text-sm">
+                <span class="font-medium text-zinc-300">Progresso total</span>
+                <span id="side-total-txt" class="tabular-nums text-zinc-400">0 / 864h</span>
+              </div>
+              <div class="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
+                <div id="side-total-bar" class="h-full bg-zinc-100 transition-all duration-300" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+              <div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="flex items-center gap-1.5 text-zinc-400"><span class="h-2 w-2 rounded-full bg-teal-400"></span>1º Target-Q</span>
+                  <span id="side-tq-txt" class="tabular-nums text-zinc-400">0/144h</span>
+                </div>
+                <div class="mt-1 h-1 w-full overflow-hidden rounded-full bg-zinc-800">
+                  <div id="side-tq-bar" class="h-full bg-teal-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="flex items-center gap-1.5 text-zinc-400"><span class="h-2 w-2 rounded-full bg-indigo-400"></span>2º Uniamérica</span>
+                  <span id="side-uni-txt" class="tabular-nums text-zinc-400">0/360h</span>
+                </div>
+                <div class="mt-1 h-1 w-full overflow-hidden rounded-full bg-zinc-800">
+                  <div id="side-uni-bar" class="h-full bg-indigo-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between text-xs">
+                  <span class="flex items-center gap-1.5 text-zinc-400"><span class="h-2 w-2 rounded-full bg-amber-400"></span>3º PUC Minas</span>
+                  <span id="side-puc-txt" class="tabular-nums text-zinc-400">0/360h</span>
+                </div>
+                <div class="mt-1 h-1 w-full overflow-hidden rounded-full bg-zinc-800">
+                  <div id="side-puc-bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subtle Footer Actions -->
+        <div class="mt-4 hidden items-center justify-between border-t border-zinc-800 pt-4 text-xs lg:flex">
+          <button id="btn-export" type="button" class="text-zinc-400 hover:text-zinc-100 transition-colors">Exportar JSON</button>
+          <button id="btn-reset-open" type="button" class="text-zinc-500 hover:text-rose-400 transition-colors">Resetar</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-4 py-6 sm:px-8 lg:px-12 lg:py-9">
+      <div class="mx-auto max-w-5xl">
+
+        <!-- VIEW 0: DASHBOARD (TELA INICIAL) -->
+        <section id="view-dashboard" class="space-y-6">
+          <div class="flex flex-wrap items-end justify-between gap-4 border-b border-zinc-800 pb-5">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Dashboard</h2>
+              <p class="mt-1 text-base text-zinc-400">Início em <span id="dash-start-label" class="font-medium text-zinc-200">19/11/2026</span> · 864 horas em ritmo de 36h/semana.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="dash-go-hoje" type="button" class="rounded-lg bg-zinc-100 px-3.5 py-2 text-sm font-medium text-zinc-950 hover:bg-white transition-colors">
+                Foco de Hoje
+              </button>
+              <button id="dash-go-kanban" type="button" class="rounded-lg border border-zinc-700 bg-zinc-900 px-3.5 py-2 text-sm font-medium text-zinc-200 hover:bg-zinc-800 transition-colors">
+                Kanban
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 Clean KPI Tiles -->
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <span class="text-sm text-zinc-400">Horas concluídas</span>
+              <div class="mt-1.5 flex items-baseline gap-1.5">
+                <span id="dash-hours" class="text-3xl font-semibold tracking-tight text-zinc-100 tabular-nums">0h</span>
+                <span class="text-xs text-zinc-500">/ 864h</span>
+              </div>
+              <p id="dash-pct-label" class="mt-1 text-sm font-medium text-teal-400">0% do plano total</p>
+            </div>
+
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <span class="text-sm text-zinc-400">Módulos finalizados</span>
+              <div class="mt-1.5 flex items-baseline gap-1.5">
+                <span id="dash-mods" class="text-3xl font-semibold tracking-tight text-zinc-100 tabular-nums">0</span>
+                <span id="dash-mods-total" class="text-xs text-zinc-500">/ 36</span>
+              </div>
+              <p id="dash-doing-label" class="mt-1 text-sm text-zinc-400">0 em andamento</p>
+            </div>
+
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <span class="text-sm text-zinc-400">Dias com check</span>
+              <div class="mt-1.5 flex items-baseline gap-1.5">
+                <span id="dash-days-checked" class="text-3xl font-semibold tracking-tight text-zinc-100 tabular-nums">0</span>
+                <span class="text-xs text-zinc-500">dias</span>
+              </div>
+              <p id="dash-days-missed" class="mt-1 text-sm text-zinc-400">0 dias de atraso ajustado</p>
+            </div>
+
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <span class="text-sm text-zinc-400">Prazo crítico (180d)</span>
+              <div class="mt-1.5 flex items-baseline gap-1.5">
+                <span class="text-3xl font-semibold tracking-tight text-zinc-100 tabular-nums">18/05/27</span>
+              </div>
+              <p id="dash-deadline-status" class="mt-1 text-sm text-teal-400 font-medium">Dentro do prazo</p>
+            </div>
+          </div>
+
+          <!-- Calendar + Schedule Adjustment -->
+          <div class="grid grid-cols-1 gap-4 lg:grid-cols-5">
+            <!-- Interactive Calendar (3 cols) -->
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 lg:col-span-3">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 class="text-base font-semibold text-zinc-100">Calendário de Estudos</h3>
+                  <p class="text-sm text-zinc-400">Clique em qualquer dia útil (Seg–Sáb) para dar check de estudo concluído.</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <button id="cal-prev" type="button" class="rounded-lg border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-sm font-medium text-zinc-200 hover:bg-zinc-700">←</button>
+                  <span id="cal-month-label" class="min-w-[130px] text-center text-sm font-semibold text-zinc-200">Novembro 2026</span>
+                  <button id="cal-next" type="button" class="rounded-lg border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-sm font-medium text-zinc-200 hover:bg-zinc-700">→</button>
+                </div>
+              </div>
+
+              <div class="mt-4 grid grid-cols-7 gap-1.5 text-center text-xs font-medium text-zinc-500">
+                <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+              </div>
+              <div id="cal-grid" class="mt-2 grid grid-cols-7 gap-1.5"></div>
+
+              <div class="mt-4 flex flex-wrap items-center gap-4 border-t border-zinc-800 pt-3 text-xs text-zinc-400">
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>Estudado (Check)</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-teal-400"></span>Início (19/11)</span>
+                <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-zinc-700"></span>Domingo (Folga)</span>
+              </div>
+            </div>
+
+            <!-- Schedule Adjustment + Milestones (2 cols) -->
+            <div class="space-y-4 lg:col-span-2">
+              <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+                <h3 class="text-base font-semibold text-zinc-100">Ajuste de Cronograma</h3>
+                <p class="mt-0.5 text-sm text-zinc-400">Perdeu um dia ou semana? Recalcule todas as datas automaticamente.</p>
+
+                <div class="mt-4 space-y-3">
+                  <div>
+                    <label for="input-start-date" class="block text-xs font-medium text-zinc-400 mb-1">Data de início</label>
+                    <input id="input-start-date" type="date" value="2026-11-19" class="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100" />
+                  </div>
+
+                  <div>
+                    <span class="block text-xs font-medium text-zinc-400 mb-1.5">Deslocar por dias perdidos (<span id="offset-badge" class="font-semibold text-zinc-100">+0 dias</span>)</span>
+                    <div class="grid grid-cols-2 gap-2">
+                      <button id="btn-miss-1d" type="button" class="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-medium text-zinc-200 hover:bg-zinc-700 transition-colors">+1 dia perdido</button>
+                      <button id="btn-miss-1w" type="button" class="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-xs font-medium text-zinc-200 hover:bg-zinc-700 transition-colors">+1 semana (6 dias)</button>
+                      <button id="btn-recover-1d" type="button" class="rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs font-medium text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors">-1 dia (adiantar)</button>
+                      <button id="btn-clear-offset" type="button" class="rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs font-medium text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200 transition-colors">Zerar atraso</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+                <h3 class="text-base font-semibold text-zinc-100">Previsão de Conclusão</h3>
+                <div class="mt-3 space-y-3">
+                  <div class="border-l-2 border-teal-500 pl-3">
+                    <p id="milestone-tq" class="text-sm font-semibold text-zinc-100">Target-Q: —</p>
+                    <p class="text-xs text-zinc-400">144h · 9 cursos e provas (70%)</p>
+                  </div>
+                  <div class="border-l-2 border-indigo-500 pl-3">
+                    <p id="milestone-uni" class="text-sm font-semibold text-zinc-100">Uniamérica: —</p>
+                    <p class="text-xs text-zinc-400">360h · Módulos + Case e Pitch</p>
+                  </div>
+                  <div class="border-l-2 border-amber-500 pl-3">
+                    <p id="milestone-puc" class="text-sm font-semibold text-zinc-100">PUC Minas: —</p>
+                    <p class="text-xs text-zinc-400">360h · 15 disciplinas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart -->
+          <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+            <h3 class="text-base font-semibold text-zinc-100">Carga Horária por Curso</h3>
+            <p class="text-sm text-zinc-400">Horas concluídas versus horas restantes em tempo real.</p>
+            <div class="relative mt-4 h-60">
+              <canvas id="dash-chart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 1: FOCO DE HOJE -->
+        <section id="view-hoje" class="hidden space-y-8">
+          <div class="flex flex-wrap items-end justify-between gap-4 border-b border-zinc-800 pb-5">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Foco de Hoje</h2>
+              <p class="mt-1 text-base text-zinc-400">Fase 1 ativa: priorize Target-Q pela manhã e Data Science à tarde.</p>
+            </div>
+            <div class="text-right">
+              <span class="text-sm text-zinc-400">Prazo crítico (180 dias)</span>
+              <p class="text-base font-semibold text-zinc-100">18/05/2027</p>
+            </div>
+          </div>
+
+          <!-- Daily 3 Blocks -->
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <div class="flex items-center justify-between text-sm text-zinc-400">
+                <span>08h30 – 10h30</span>
+                <span class="font-medium text-teal-400">2h</span>
+              </div>
+              <p class="mt-2 text-base font-medium text-zinc-100">Bloco A · Prioridade 1</p>
+              <p class="mt-0.5 text-sm text-zinc-400">Teoria e aulas do módulo ativo na Target-Q.</p>
+            </div>
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <div class="flex items-center justify-between text-sm text-zinc-400">
+                <span>11h00 – 13h00</span>
+                <span class="font-medium text-teal-400">2h</span>
+              </div>
+              <p class="mt-2 text-base font-medium text-zinc-100">Bloco B · Prática</p>
+              <p class="mt-0.5 text-sm text-zinc-400">Exercícios, FMEA/MSA ou prova do módulo.</p>
+            </div>
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
+              <div class="flex items-center justify-between text-sm text-zinc-400">
+                <span>14h30 – 16h30</span>
+                <span class="font-medium text-indigo-400">2h</span>
+              </div>
+              <p class="mt-2 text-base font-medium text-zinc-100">Bloco C · Paralelo</p>
+              <p class="mt-0.5 text-sm text-zinc-400">Uniamérica Data Science (Módulo 1).</p>
+            </div>
+          </div>
+
+          <!-- Active & Next Up -->
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Em Andamento</h3>
+              <div id="today-doing" class="mt-3 space-y-2"></div>
+            </div>
+            <div>
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">Próximos da Fila</h3>
+              <div id="today-next" class="mt-3 space-y-2"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: KANBAN -->
+        <section id="view-kanban" class="hidden space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Kanban</h2>
+              <p class="mt-0.5 text-base text-zinc-400">Arraste os cartões entre colunas ou use os botões rápidos de status.</p>
+            </div>
+            <div id="kanban-pills" class="flex flex-wrap gap-1.5">
+              <button type="button" data-kfilter="all" class="k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-100 text-zinc-950">Todos</button>
+              <button type="button" data-kfilter="targetq" class="k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-teal-300 border border-teal-800 hover:bg-teal-950/60">Target-Q</button>
+              <button type="button" data-kfilter="uniamerica" class="k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-indigo-300 border border-indigo-800 hover:bg-indigo-950/60">Uniamérica</button>
+              <button type="button" data-kfilter="puc" class="k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-amber-300 border border-amber-800 hover:bg-amber-950/60">PUC Minas</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <!-- A Fazer -->
+            <div class="rounded-xl border border-zinc-800 bg-zinc-900/70 p-3">
+              <div class="mb-3 flex items-center justify-between px-1">
+                <span class="flex items-center gap-2 text-sm font-semibold text-zinc-300">
+                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-500"></span>
+                  A Fazer
+                </span>
+                <span id="k-count-todo" class="rounded-full bg-zinc-800 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-zinc-300 border border-zinc-700">0</span>
+              </div>
+              <div id="k-col-todo" data-status="todo" class="k-drop min-h-[280px] space-y-2.5 rounded-lg p-0.5"></div>
+            </div>
+
+            <!-- Em Andamento -->
+            <div class="rounded-xl border border-indigo-900/60 bg-indigo-950/25 p-3">
+              <div class="mb-3 flex items-center justify-between px-1">
+                <span class="flex items-center gap-2 text-sm font-semibold text-indigo-300">
+                  <span class="h-2.5 w-2.5 rounded-full bg-indigo-400"></span>
+                  Em Andamento
+                </span>
+                <span id="k-count-doing" class="rounded-full bg-indigo-950 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-indigo-300 border border-indigo-800">0</span>
+              </div>
+              <div id="k-col-doing" data-status="doing" class="k-drop min-h-[280px] space-y-2.5 rounded-lg p-0.5"></div>
+            </div>
+
+            <!-- Concluído -->
+            <div class="rounded-xl border border-emerald-900/60 bg-emerald-950/25 p-3">
+              <div class="mb-3 flex items-center justify-between px-1">
+                <span class="flex items-center gap-2 text-sm font-semibold text-emerald-300">
+                  <span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+                  Concluído
+                </span>
+                <span id="k-count-done" class="rounded-full bg-emerald-950 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-emerald-300 border border-emerald-800">0</span>
+              </div>
+              <div id="k-col-done" data-status="done" class="k-drop min-h-[280px] space-y-2.5 rounded-lg p-0.5"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: TO-DO -->
+        <section id="view-todo" class="hidden space-y-5">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">To-Do</h2>
+              <p class="mt-0.5 text-base text-zinc-400">Marque o que já finalizou ou adicione lembretes rápidos de revisão e prova.</p>
+            </div>
+            <input id="todo-search" type="search" placeholder="Filtrar por nome..." class="w-full sm:w-60 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-zinc-500 focus:outline-none" />
+          </div>
+
+          <!-- Inline Add -->
+          <form id="todo-form" class="flex flex-wrap items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 p-3">
+            <input id="todo-title" type="text" required placeholder="Nova tarefa (ex.: Fazer prova de APQP, revisar Python POO)..." class="flex-1 min-w-[200px] bg-transparent px-2 py-1 text-base text-zinc-100 placeholder:text-zinc-500 focus:outline-none" />
+            <select id="todo-prog" class="rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-200">
+              <option value="targetq">Target-Q</option>
+              <option value="uniamerica">Uniamérica</option>
+              <option value="puc">PUC Minas</option>
+            </select>
+            <input id="todo-hrs" type="number" min="0" max="40" value="2" class="w-16 rounded-lg border border-zinc-700 bg-zinc-950 px-2 py-2 text-sm text-zinc-100 text-center" />
+            <button type="submit" class="rounded-lg bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-white transition-colors">
+              Adicionar
+            </button>
+          </form>
+
+          <!-- Grouped Lists -->
+          <div id="todo-groups" class="space-y-6"></div>
+        </section>
+
+        <!-- VIEW 4: CRONOGRAMA -->
+        <section id="view-cronograma" class="hidden space-y-6">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-zinc-800 pb-4">
+            <div>
+              <h2 class="text-2xl font-semibold tracking-tight text-zinc-100">Cronograma</h2>
+              <p class="mt-0.5 text-base text-zinc-400">Datas recalculadas automaticamente conforme o início e eventuais dias perdidos.</p>
+            </div>
+            <div id="crono-pills" class="flex flex-wrap gap-1.5">
+              <button type="button" data-cprog="targetq" class="c-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-100 text-zinc-950">1º Target-Q (144h)</button>
+              <button type="button" data-cprog="uniamerica" class="c-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-700 hover:bg-zinc-800">2º Uniamérica (360h)</button>
+              <button type="button" data-cprog="puc" class="c-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-700 hover:bg-zinc-800">3º PUC Minas (360h)</button>
+            </div>
+          </div>
+
+          <div id="crono-summary" class="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-sm text-zinc-300"></div>
+
+          <div class="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-zinc-800 text-xs font-medium uppercase tracking-wider text-zinc-400">
+                  <th class="py-3 pl-4 pr-3">Módulo / Disciplina</th>
+                  <th class="py-3 px-3">Período</th>
+                  <th class="py-3 px-3 text-right">Carga</th>
+                  <th class="py-3 pl-3 pr-4 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody id="crono-tbody" class="divide-y divide-zinc-800/80 text-base"></tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Reset Modal -->
+  <div id="reset-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
+    <div class="w-full max-w-sm rounded-xl bg-zinc-900 p-5 shadow-xl border border-zinc-800">
+      <h3 class="text-base font-semibold text-zinc-100">Resetar progresso?</h3>
+      <p class="mt-1.5 text-sm text-zinc-400 leading-relaxed">Todas as disciplinas voltarão para "A Fazer", os checks do calendário serão limpos e a data voltará para 19/11/2026.</p>
+      <div class="mt-4 flex justify-end gap-2">
+        <button id="btn-reset-cancel" type="button" class="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm font-medium text-zinc-300 hover:bg-zinc-800">Cancelar</button>
+        <button id="btn-reset-confirm" type="button" class="rounded-lg bg-rose-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-rose-500">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="pointer-events-none fixed bottom-5 right-5 z-50 hidden rounded-lg border border-zinc-700 bg-zinc-800 px-3.5 py-2 text-sm font-medium text-zinc-100 shadow-lg"></div>
+
+  <script>
+    const STORAGE_KEY = 'plano_estudos_v4';
+    const DEFAULT_START = '2026-11-19';
+
+    const INITIAL_ITEMS = [
+      // 1º Target-Q (9 cursos = 144h)
+      { id: 'tq-1', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'APQP – 3ª Edição (2024)', hours: 8, status: 'todo', custom: false },
+      { id: 'tq-2', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'FMEA – 4ª Edição', hours: 16, status: 'todo', custom: false },
+      { id: 'tq-3', program: 'targetq', sub: 'Novo FMEA · Fase 1', title: 'DFMEA – AIAG & VDA 1ª Edição (Produto)', hours: 16, status: 'todo', custom: false },
+      { id: 'tq-4', program: 'targetq', sub: 'Novo FMEA · Fase 1', title: 'PFMEA – AIAG & VDA 1ª Edição (Processo)', hours: 16, status: 'todo', custom: false },
+      { id: 'tq-5', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'Plano de Controle – 1ª Edição', hours: 8, status: 'todo', custom: false },
+      { id: 'tq-6', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'MSA – Análises do Sistema de Medição 4ª Ed.', hours: 24, status: 'todo', custom: false },
+      { id: 'tq-7', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'CEP – AIAG & VDA 1ª Edição (2026)', hours: 16, status: 'todo', custom: false },
+      { id: 'tq-8', program: 'targetq', sub: 'Core Tools · Fase 1', title: 'PPAP – 4ª Edição', hours: 8, status: 'todo', custom: false },
+      { id: 'tq-9', program: 'targetq', sub: 'Auditoria · Fase 1', title: 'Formação de Auditor Interno IATF-16949:2016', hours: 32, status: 'todo', custom: false },
+
+      // 2º Uniamérica Data Science (12 disciplinas = 360h)
+      { id: 'uni-1', program: 'uniamerica', sub: 'Módulo 1', title: 'Statistics for Data Science', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-2', program: 'uniamerica', sub: 'Módulo 1', title: 'Learning Programming', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-3', program: 'uniamerica', sub: 'Módulo 1', title: 'Python', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-4', program: 'uniamerica', sub: 'Módulo 1', title: 'Essencial DataBase (SQL)', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-5', program: 'uniamerica', sub: 'Módulo 2', title: 'Coleta e Tratamento de Dados', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-6', program: 'uniamerica', sub: 'Módulo 2', title: 'Statistics Library in Python (Pandas/Numpy)', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-7', program: 'uniamerica', sub: 'Módulo 2', title: 'Machine Learning', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-8', program: 'uniamerica', sub: 'Módulo 2', title: 'Clusterização', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-9', program: 'uniamerica', sub: 'Módulo 3', title: 'Regressão e Predição', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-10', program: 'uniamerica', sub: 'Módulo 3', title: 'Network Science', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-11', program: 'uniamerica', sub: 'Módulo 3', title: 'Deep Learning', hours: 30, status: 'todo', custom: false },
+      { id: 'uni-12', program: 'uniamerica', sub: 'Módulo 3 · Avaliações', title: 'Perceptron e Adaline + Prova, Case e Pitch', hours: 30, status: 'todo', custom: false },
+
+      // 3º PUC Minas (15 disciplinas = 360h)
+      { id: 'puc-1', program: 'puc', sub: 'Canvas 12/01/26', title: '1. Fundamentos de Engenharia de Qualidade', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-2', program: 'puc', sub: 'Canvas 02/02/26', title: '2. Estratégias Modernas de Teste de Software', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-3', program: 'puc', sub: 'Canvas 02/03/26', title: '3. CI/CD, Pipelines e Testes Automatizados (NC)', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-4', program: 'puc', sub: 'Canvas 06/04/26', title: '4. Arquitetura de Soluções em Nuvem (NC)', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-5', program: 'puc', sub: 'Canvas 27/04/26', title: '5. Testes de Usabilidade e Acessibilidade', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-6', program: 'puc', sub: 'Canvas 18/05/26', title: '6. Testes não Funcionais', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-7', program: 'puc', sub: 'Canvas 08/06/26', title: '7. Testes para APIs e Arquiteturas Distribuídas', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-8', program: 'puc', sub: 'Canvas 06/07/26', title: '8. Automação de Testes e QaOps', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-9', program: 'puc', sub: 'Canvas 03/08/26', title: '9. Qualidade em Contextos Ágeis e DevOps', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-10', program: 'puc', sub: 'Canvas 24/08/26', title: '10. Qualidade em Aplicações Web e Mobile', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-11', program: 'puc', sub: 'Canvas 14/09/26', title: '11. Monitoramento e Observabilidade (NC)', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-12', program: 'puc', sub: 'Canvas 05/10/26', title: '12. Segurança e Conformidade em Testes', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-13', program: 'puc', sub: 'Canvas 09/11/26', title: '13. Engenharia de Qualidade com IA e Dados', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-14', program: 'puc', sub: 'Abre 07/12/26', title: '14. Liderança e Qualidade Contínua', hours: 24, status: 'todo', custom: false },
+      { id: 'puc-15', program: 'puc', sub: 'Abre 11/01/27', title: '15. Projeto em Gestão de Qualidade e Testes', hours: 24, status: 'todo', custom: false }
+    ];
+
+    const PROG = {
+      targetq: {
+        name: '1º Target-Q Qualidade Automotiva',
+        short: 'Target-Q',
+        dot: 'bg-teal-400',
+        borderLeft: 'border-l-teal-500',
+        pill: 'bg-teal-950/80 text-teal-300 border-teal-800',
+        todoHeader: 'bg-teal-950/40 border-zinc-800 text-teal-300',
+        todoCount: 'bg-teal-900/60 text-teal-200',
+        accentCheck: 'accent-teal-500',
+        summary: 'Prazo de 180 dias. Dedicando 4h/dia (24h/semana) na Fase 1, você conclui todos os 9 cursos com folga para as provas (mín. 70%).'
+      },
+      uniamerica: {
+        name: '2º Uniamérica Data Science',
+        short: 'Uniamérica',
+        dot: 'bg-indigo-400',
+        borderLeft: 'border-l-indigo-500',
+        pill: 'bg-indigo-950/80 text-indigo-300 border-indigo-800',
+        todoHeader: 'bg-indigo-950/40 border-zinc-800 text-indigo-300',
+        todoCount: 'bg-indigo-900/60 text-indigo-200',
+        accentCheck: 'accent-indigo-500',
+        summary: 'Prazo de 6 meses. Começa com 2h/dia na Fase 1 e acelera para 5h/dia na Fase 2, fechando módulos + Prova, Estudo de Caso e Pitch.'
+      },
+      puc: {
+        name: '3º PUC Minas Qualidade e Testes',
+        short: 'PUC Minas',
+        dot: 'bg-amber-400',
+        borderLeft: 'border-l-amber-500',
+        pill: 'bg-amber-950/80 text-amber-300 border-amber-800',
+        todoHeader: 'bg-amber-950/40 border-zinc-800 text-amber-300',
+        todoCount: 'bg-amber-900/60 text-amber-200',
+        accentCheck: 'accent-amber-500',
+        summary: 'Prazo de 2 anos. Entra com 1h/dia na Fase 2 e assume 6h/dia (36h/semana) na Fase 3, quando todas as 15 disciplinas já estarão abertas.'
+      }
+    };
+
+    const STATUS_LABEL = { todo: 'A Fazer', doing: 'Em Andamento', done: 'Concluído' };
+    const MONTHS_PT = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+    let dashChartInstance = null;
+    let state = loadState();
+
+    function loadState() {
+      const fallback = {
+        tab: 'dashboard',
+        kFilter: 'all',
+        cProg: 'targetq',
+        dragId: null,
+        startDate: DEFAULT_START,
+        offsetDays: 0,
+        calYear: 2026,
+        calMonth: 10,
+        checkedDays: {},
+        items: JSON.parse(JSON.stringify(INITIAL_ITEMS))
+      };
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const p = JSON.parse(raw);
+          if (p && Array.isArray(p.items)) {
+            return { ...fallback, ...p, dragId: null };
+          }
+        }
+      } catch (e) {}
+      return fallback;
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          startDate: state.startDate,
+          offsetDays: state.offsetDays,
+          checkedDays: state.checkedDays,
+          items: state.items
+        }));
+      } catch (e) {}
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      clearTimeout(window.__tt);
+      window.__tt = setTimeout(() => el.classList.add('hidden'), 2200);
+    }
+
+    function parseYMD(str) {
+      const [y, m, d] = str.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function toYMD(dt) {
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const d = String(dt.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function fmtBR(dt, shortYear = true) {
+      const d = String(dt.getDate()).padStart(2, '0');
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const y = shortYear ? String(dt.getFullYear()).slice(-2) : dt.getFullYear();
+      return `${d}/${m}/${y}`;
+    }
+
+    function isStudyDay(dt) {
+      if (dt.getDay() === 0) return false;
+      const m = dt.getMonth() + 1;
+      const d = dt.getDate();
+      if ((m === 12 && d === 25) || (m === 1 && d === 1)) return false;
+      return true;
+    }
+
+    function buildStudyDayStream(startStr, offsetDays) {
+      const cur = parseYMD(startStr || DEFAULT_START);
+      let skipped = 0;
+      while (skipped < Math.max(0, offsetDays)) {
+        cur.setDate(cur.getDate() + 1);
+        if (isStudyDay(cur)) skipped += 1;
+      }
+      const days = [];
+      while (days.length < 220) {
+        if (isStudyDay(cur)) days.push(new Date(cur.getTime()));
+        cur.setDate(cur.getDate() + 1);
+      }
+      return days;
+    }
+
+    function computeSchedule() {
+      const days = buildStudyDayStream(state.startDate, state.offsetDays);
+      const tqItems = state.items.filter((x) => !x.custom && x.program === 'targetq');
+      const uniItems = state.items.filter((x) => !x.custom && x.program === 'uniamerica');
+      const pucItems = state.items.filter((x) => !x.custom && x.program === 'puc');
+
+      const allocQueue = (queue, dayDate, hrs, map) => {
+        let rem = hrs;
+        while (rem > 0 && queue.length > 0) {
+          const cur = queue[0];
+          if (!map[cur.item.id]) map[cur.item.id] = { start: dayDate, end: dayDate };
+          const take = Math.min(rem, cur.left);
+          cur.left -= take;
+          rem -= take;
+          map[cur.item.id].end = dayDate;
+          if (cur.left <= 0) queue.shift();
+        }
+      };
+
+      const qTq = tqItems.map((item) => ({ item, left: item.hours }));
+      const qUni = uniItems.map((item) => ({ item, left: item.hours }));
+      const qPuc = pucItems.map((item) => ({ item, left: item.hours }));
+      const periods = {};
+      let endTq = days[0], endUni = days[0], endPuc = days[0];
+
+      for (let i = 0; i < days.length; i++) {
+        const dt = days[i];
+        if (qTq.length > 0) {
+          allocQueue(qTq, dt, 4, periods);
+          allocQueue(qUni, dt, 2, periods);
+          endTq = dt;
+          endUni = dt;
+        } else if (qUni.length > 0) {
+          allocQueue(qUni, dt, 5, periods);
+          allocQueue(qPuc, dt, 1, periods);
+          endUni = dt;
+          endPuc = dt;
+        } else if (qPuc.length > 0) {
+          allocQueue(qPuc, dt, 6, periods);
+          endPuc = dt;
+        } else {
+          break;
+        }
+      }
+
+      return { periods, endTq, endUni, endPuc };
+    }
+
+    function getPeriodLabel(item, schedule) {
+      if (item.custom) return 'Flexível';
+      const p = schedule.periods[item.id];
+      if (!p) return '—';
+      return `${fmtBR(p.start)} – ${fmtBR(p.end)}`;
+    }
+
+    function switchTab(tab) {
+      state.tab = tab;
+      ['dashboard', 'hoje', 'kanban', 'todo', 'cronograma'].forEach((t) => {
+        document.getElementById('view-' + t).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById('nav-' + t);
+        const dot = btn.querySelector('span');
+        if (t === tab) {
+          btn.classList.add('bg-zinc-800', 'text-zinc-100');
+          btn.classList.remove('text-zinc-400');
+          dot.classList.add('bg-teal-400');
+          dot.classList.remove('bg-zinc-600');
+        } else {
+          btn.classList.remove('bg-zinc-800', 'text-zinc-100');
+          btn.classList.add('text-zinc-400');
+          dot.classList.remove('bg-teal-400');
+          dot.classList.add('bg-zinc-600');
+        }
+      });
+      if (tab === 'dashboard' && dashChartInstance) dashChartInstance.resize();
+    }
+
+    function setStatus(id, status) {
+      const item = state.items.find((x) => x.id === id);
+      if (!item) return;
+      item.status = status;
+      saveState();
+      renderAll();
+    }
+
+    function cycleStatus(id) {
+      const item = state.items.find((x) => x.id === id);
+      if (!item) return;
+      const seq = ['todo', 'doing', 'done'];
+      setStatus(id, seq[(seq.indexOf(item.status) + 1) % 3]);
+    }
+
+    function removeCustom(id) {
+      state.items = state.items.filter((x) => x.id !== id);
+      saveState();
+      renderAll();
+      toast('Tarefa removida');
+    }
+
+    function toggleCalendarDay(ymd) {
+      if (state.checkedDays[ymd]) {
+        delete state.checkedDays[ymd];
+        toast('Check removido');
+      } else {
+        state.checkedDays[ymd] = true;
+        toast('Dia marcado como estudado!');
+      }
+      saveState();
+      renderAll();
+    }
+
+    function getProgramStats() {
+      const base = state.items.filter((x) => !x.custom);
+      const calc = (key, target) => {
+        const list = base.filter((x) => x.program === key);
+        const done = list.filter((x) => x.status === 'done').reduce((s, x) => s + (Number(x.hours) || 0), 0);
+        return { done, left: Math.max(0, target - done), target };
+      };
+      return {
+        tq: calc('targetq', 144),
+        uni: calc('uniamerica', 360),
+        puc: calc('puc', 360)
+      };
+    }
+
+    function renderSidebarProgress() {
+      const stats = getProgramStats();
+      const totalDone = stats.tq.done + stats.uni.done + stats.puc.done;
+      const totalPct = Math.round((totalDone / 864) * 100);
+      const startBr = fmtBR(parseYMD(state.startDate));
+
+      document.getElementById('side-subtitle').textContent = `Seg–Sáb · Início ${startBr}`;
+      document.getElementById('side-total-txt').textContent = `${totalDone} / 864h`;
+      document.getElementById('side-total-bar').style.width = `${totalPct}%`;
+      document.getElementById('mobile-pct').textContent = `${totalPct}% (${totalDone}h)`;
+
+      document.getElementById('side-tq-txt').textContent = `${stats.tq.done}/144h`;
+      document.getElementById('side-tq-bar').style.width = `${Math.round((stats.tq.done / 144) * 100)}%`;
+
+      document.getElementById('side-uni-txt').textContent = `${stats.uni.done}/360h`;
+      document.getElementById('side-uni-bar').style.width = `${Math.round((stats.uni.done / 360) * 100)}%`;
+
+      document.getElementById('side-puc-txt').textContent = `${stats.puc.done}/360h`;
+      document.getElementById('side-puc-bar').style.width = `${Math.round((stats.puc.done / 360) * 100)}%`;
+    }
+
+    function renderCalendar() {
+      const y = state.calYear;
+      const m = state.calMonth;
+      document.getElementById('cal-month-label').textContent = `${MONTHS_PT[m]} ${y}`;
+
+      const firstDay = new Date(y, m, 1).getDay();
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const grid = document.getElementById('cal-grid');
+      const cells = [];
+
+      for (let i = 0; i < firstDay; i++) {
+        cells.push('<div></div>');
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const dt = new Date(y, m, d);
+        const ymd = toYMD(dt);
+        const isSun = dt.getDay() === 0;
+        const checked = !!state.checkedDays[ymd];
+        const isStart = ymd === state.startDate;
+
+        if (isSun) {
+          cells.push(`
+            <div class="flex h-10 flex-col items-center justify-center rounded-lg bg-zinc-950/60 text-xs text-zinc-600">
+              <span>${d}</span>
+            </div>
+          `);
+        } else {
+          const cls = checked
+            ? 'bg-emerald-600 text-white font-semibold border-emerald-500'
+            : isStart
+              ? 'bg-teal-950 text-teal-200 font-semibold border-teal-500 ring-1 ring-teal-500'
+              : 'bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-teal-500 hover:bg-zinc-800';
+          cells.push(`
+            <button type="button" data-calday="${ymd}" class="flex h-10 flex-col items-center justify-center rounded-lg border text-xs transition-colors ${cls}">
+              <span>${d}</span>
+              ${checked ? '<span class="text-[10px] leading-none">✓</span>' : ''}
+            </button>
+          `);
+        }
+      }
+      grid.innerHTML = cells.join('');
+    }
+
+    function renderDashboard(schedule) {
+      const stats = getProgramStats();
+      const totalDone = stats.tq.done + stats.uni.done + stats.puc.done;
+      const totalPct = Math.round((totalDone / 864) * 100);
+      const doneMods = state.items.filter((x) => x.status === 'done').length;
+      const doingMods = state.items.filter((x) => x.status === 'doing').length;
+      const checkedCount = Object.keys(state.checkedDays).length;
+
+      document.getElementById('dash-start-label').textContent = fmtBR(parseYMD(state.startDate), false);
+      document.getElementById('input-start-date').value = state.startDate;
+      document.getElementById('offset-badge').textContent = `+${state.offsetDays} ${state.offsetDays === 1 ? 'dia' : 'dias'}`;
+
+      document.getElementById('dash-hours').textContent = `${totalDone}h`;
+      document.getElementById('dash-pct-label').textContent = `${totalPct}% do plano total`;
+      document.getElementById('dash-mods').textContent = doneMods;
+      document.getElementById('dash-mods-total').textContent = `/ ${state.items.length}`;
+      document.getElementById('dash-doing-label').textContent = `${doingMods} em andamento`;
+      document.getElementById('dash-days-checked').textContent = checkedCount;
+      document.getElementById('dash-days-missed').textContent = `${state.offsetDays} dias de atraso ajustado`;
+
+      document.getElementById('milestone-tq').textContent = `Target-Q: ${fmtBR(schedule.endTq, false)}`;
+      document.getElementById('milestone-uni').textContent = `Uniamérica: ${fmtBR(schedule.endUni, false)}`;
+      document.getElementById('milestone-puc').textContent = `PUC Minas: ${fmtBR(schedule.endPuc, false)}`;
+
+      const deadlineLimit = new Date(2027, 4, 18);
+      const dlEl = document.getElementById('dash-deadline-status');
+      if (schedule.endUni > deadlineLimit) {
+        dlEl.textContent = 'Atenção: passou de 180d';
+        dlEl.className = 'mt-1 text-sm text-rose-400 font-semibold';
+      } else {
+        dlEl.textContent = 'Dentro do prazo (folga OK)';
+        dlEl.className = 'mt-1 text-sm text-teal-400 font-medium';
+      }
+
+      renderCalendar();
+
+      const canvas = document.getElementById('dash-chart');
+      if (!canvas || typeof Chart === 'undefined') return;
+
+      const doneData = [stats.tq.done, stats.uni.done, stats.puc.done];
+      const leftData = [stats.tq.left, stats.uni.left, stats.puc.left];
+
+      if (dashChartInstance) {
+        dashChartInstance.data.datasets[0].data = doneData;
+        dashChartInstance.data.datasets[1].data = leftData;
+        dashChartInstance.update();
+        return;
+      }
+
+      dashChartInstance = new Chart(canvas, {
+        type: 'bar',
+        data: {
+          labels: ['1º Target-Q (144h)', '2º Uniamérica (360h)', '3º PUC Minas (360h)'],
+          datasets: [
+            {
+              label: 'Concluídas (h)',
+              data: doneData,
+              backgroundColor: ['#14b8a6', '#6366f1', '#f59e0b'],
+              borderRadius: 4
+            },
+            {
+              label: 'Restantes (h)',
+              data: leftData,
+              backgroundColor: '#27272a',
+              borderRadius: 4
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, max: 360, grid: { color: '#27272a' }, ticks: { color: '#a1a1aa', font: { size: 13 } } },
+            y: { stacked: true, grid: { display: false }, ticks: { color: '#e4e4e7', font: { size: 14, weight: '500' } } }
+          },
+          plugins: {
+            legend: { position: 'bottom', labels: { boxWidth: 10, color: '#a1a1aa', font: { size: 13 } } }
+          }
+        }
+      });
+    }
+
+    function renderHoje(schedule) {
+      const doing = state.items.filter((x) => x.status === 'doing');
+      const next = state.items.filter((x) => x.status === 'todo').slice(0, 4);
+
+      const renderMini = (item, btnLabel, nextStatus) => `
+        <div class="flex items-center justify-between gap-3 rounded-xl border border-zinc-800 border-l-4 ${PROG[item.program].borderLeft} bg-zinc-900 px-4 py-3">
+          <div class="min-w-0">
+            <p class="truncate text-base font-medium text-zinc-100">${esc(item.title)}</p>
+            <p class="mt-0.5 text-sm text-zinc-400">${PROG[item.program].short} · ${item.hours}h · ${esc(getPeriodLabel(item, schedule))}</p>
+          </div>
+          <button type="button" data-action="set" data-id="${item.id}" data-status="${nextStatus}" class="shrink-0 rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-700">
+            ${btnLabel}
+          </button>
+        </div>
+      `;
+
+      document.getElementById('today-doing').innerHTML = doing.length
+        ? doing.map((x) => renderMini(x, 'Concluir', 'done')).join('')
+        : '<p class="rounded-xl border border-dashed border-zinc-800 p-4 text-sm text-zinc-500">Nenhum módulo em andamento agora. Clique em "Iniciar" ao lado para começar.</p>';
+
+      document.getElementById('today-next').innerHTML = next.length
+        ? next.map((x) => renderMini(x, 'Iniciar', 'doing')).join('')
+        : '<p class="rounded-xl border border-dashed border-zinc-800 p-4 text-sm text-zinc-500">Todos os módulos já foram iniciados ou concluídos.</p>';
+    }
+
+    function renderKanban(schedule) {
+      const cols = {
+        todo: document.getElementById('k-col-todo'),
+        doing: document.getElementById('k-col-doing'),
+        done: document.getElementById('k-col-done')
+      };
+      Object.values(cols).forEach((c) => { c.innerHTML = ''; });
+      const counts = { todo: 0, doing: 0, done: 0 };
+
+      state.items.forEach((item) => {
+        if (state.kFilter !== 'all' && item.program !== state.kFilter) return;
+        counts[item.status] += 1;
+
+        const p = PROG[item.program];
+        const card = document.createElement('div');
+        card.className = `rounded-lg border border-zinc-800 border-l-4 ${p.borderLeft} bg-zinc-950 p-3.5 cursor-grab active:cursor-grabbing hover:border-zinc-700 transition-all`;
+        card.draggable = true;
+        card.addEventListener('dragstart', () => { state.dragId = item.id; card.classList.add('opacity-50'); });
+        card.addEventListener('dragend', () => { state.dragId = null; card.classList.remove('opacity-50'); });
+
+        const nextStatus = item.status === 'todo' ? 'doing' : item.status === 'doing' ? 'done' : 'todo';
+        const nextText = item.status === 'todo' ? 'Iniciar →' : item.status === 'doing' ? 'Concluir ✓' : '↺ Reabrir';
+        const btnTone = item.status === 'todo'
+          ? 'text-indigo-300 hover:bg-indigo-950'
+          : item.status === 'doing'
+            ? 'text-emerald-300 hover:bg-emerald-950'
+            : 'text-zinc-400 hover:bg-zinc-800';
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2 text-xs">
+            <span class="rounded border px-2 py-0.5 font-medium ${p.pill}">${p.short}</span>
+            <span class="font-medium text-zinc-500 tabular-nums">${item.hours}h</span>
+          </div>
+          <p class="mt-2 text-sm font-medium text-zinc-100 leading-snug">${esc(item.title)}</p>
+          <div class="mt-2.5 flex items-center justify-between text-xs">
+            <span class="text-zinc-500">${esc(getPeriodLabel(item, schedule))}</span>
+            <button type="button" data-action="set" data-id="${item.id}" data-status="${nextStatus}" class="rounded px-2 py-0.5 font-medium transition-colors ${btnTone}">${nextText}</button>
+          </div>
+        `;
+        cols[item.status].appendChild(card);
+      });
+
+      document.getElementById('k-count-todo').textContent = counts.todo;
+      document.getElementById('k-count-doing').textContent = counts.doing;
+      document.getElementById('k-count-done').textContent = counts.done;
+    }
+
+    function renderTodo(schedule) {
+      const q = document.getElementById('todo-search').value.trim().toLowerCase();
+      const wrap = document.getElementById('todo-groups');
+
+      wrap.innerHTML = ['targetq', 'uniamerica', 'puc'].map((key) => {
+        const list = state.items.filter((x) => x.program === key && (!q || x.title.toLowerCase().includes(q)));
+        if (!list.length) return '';
+        const p = PROG[key];
+        const doneCount = list.filter((x) => x.status === 'done').length;
+
+        return `
+          <div class="rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden">
+            <div class="flex items-center justify-between border-b px-4 py-3 ${p.todoHeader}">
+              <span class="flex items-center gap-2 text-sm font-semibold">
+                <span class="h-2.5 w-2.5 rounded-full ${p.dot}"></span>
+                ${p.name}
+              </span>
+              <span class="rounded-full px-2.5 py-0.5 text-xs font-semibold tabular-nums ${p.todoCount}">${doneCount}/${list.length}</span>
+            </div>
+            <ul class="divide-y divide-zinc-800/80">
+              ${list.map((item) => `
+                <li class="flex items-center justify-between gap-3 px-4 py-3 hover:bg-zinc-800/40 transition-colors">
+                  <label class="flex items-center gap-3 cursor-pointer flex-1 min-w-0">
+                    <input type="checkbox" ${item.status === 'done' ? 'checked' : ''} data-action="toggle" data-id="${item.id}" class="h-4 w-4 rounded border-zinc-600 bg-zinc-950 ${p.accentCheck}" />
+                    <span class="truncate text-base ${item.status === 'done' ? 'line-through text-zinc-500' : 'text-zinc-200'}">${esc(item.title)}</span>
+                  </label>
+                  <div class="flex items-center gap-3 shrink-0">
+                    <span class="text-xs text-zinc-500 hidden sm:inline">${esc(getPeriodLabel(item, schedule))}</span>
+                    <span class="text-xs font-medium text-zinc-400 tabular-nums">${item.hours}h</span>
+                    ${item.custom ? `<button type="button" data-action="del" data-id="${item.id}" class="text-xs text-rose-400 hover:text-rose-300">Remover</button>` : ''}
+                  </div>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `;
+      }).join('') || '<p class="text-base text-zinc-500">Nenhuma tarefa encontrada.</p>';
+    }
+
+    function renderCronograma(schedule) {
+      const p = state.cProg;
+      document.getElementById('crono-summary').innerHTML = `
+        <div class="flex items-start gap-2.5">
+          <span class="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${PROG[p].dot}"></span>
+          <p class="text-sm text-zinc-300 leading-relaxed">${PROG[p].summary}</p>
+        </div>
+      `;
+
+      const list = state.items.filter((x) => !x.custom && x.program === p);
+      document.getElementById('crono-tbody').innerHTML = list.map((item) => {
+        const badge = item.status === 'done'
+          ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
+          : item.status === 'doing'
+            ? 'bg-indigo-950 text-indigo-300 border border-indigo-800'
+            : 'bg-zinc-800 text-zinc-300 border border-zinc-700';
+        return `
+          <tr class="hover:bg-zinc-800/40">
+            <td class="py-3.5 pl-4 pr-3">
+              <div class="${item.status === 'done' ? 'line-through text-zinc-500' : 'font-medium text-zinc-100'}">${esc(item.title)}</div>
+              <div class="text-xs text-zinc-500">${esc(item.sub)}</div>
+            </td>
+            <td class="py-3.5 px-3 text-sm text-zinc-400 whitespace-nowrap">${esc(getPeriodLabel(item, schedule))}</td>
+            <td class="py-3.5 px-3 text-sm font-medium text-zinc-300 text-right tabular-nums whitespace-nowrap">${item.hours}h</td>
+            <td class="py-3.5 pl-3 pr-4 text-right whitespace-nowrap">
+              <button type="button" data-action="cycle" data-id="${item.id}" class="rounded-full px-3 py-1 text-xs font-medium ${badge}">
+                ${STATUS_LABEL[item.status]}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderAll() {
+      const schedule = computeSchedule();
+      renderSidebarProgress();
+      renderDashboard(schedule);
+      renderHoje(schedule);
+      renderKanban(schedule);
+      renderTodo(schedule);
+      renderCronograma(schedule);
+    }
+
+    // Navigation
+    ['dashboard', 'hoje', 'kanban', 'todo', 'cronograma'].forEach((t) => {
+      document.getElementById('nav-' + t).addEventListener('click', () => switchTab(t));
+    });
+    document.getElementById('dash-go-hoje').addEventListener('click', () => switchTab('hoje'));
+    document.getElementById('dash-go-kanban').addEventListener('click', () => switchTab('kanban'));
+
+    // Calendar navigation & check
+    document.getElementById('cal-prev').addEventListener('click', () => {
+      state.calMonth -= 1;
+      if (state.calMonth < 0) { state.calMonth = 11; state.calYear -= 1; }
+      renderCalendar();
+    });
+    document.getElementById('cal-next').addEventListener('click', () => {
+      state.calMonth += 1;
+      if (state.calMonth > 11) { state.calMonth = 0; state.calYear += 1; }
+      renderCalendar();
+    });
+    document.getElementById('cal-grid').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-calday]');
+      if (!btn) return;
+      toggleCalendarDay(btn.dataset.calday);
+    });
+
+    // Schedule adjustment controls
+    document.getElementById('input-start-date').addEventListener('change', (e) => {
+      if (!e.target.value) return;
+      state.startDate = e.target.value;
+      saveState();
+      renderAll();
+      toast('Data de início atualizada');
+    });
+    document.getElementById('btn-miss-1d').addEventListener('click', () => {
+      state.offsetDays += 1;
+      saveState();
+      renderAll();
+      toast('Cronograma ajustado (+1 dia)');
+    });
+    document.getElementById('btn-miss-1w').addEventListener('click', () => {
+      state.offsetDays += 6;
+      saveState();
+      renderAll();
+      toast('Cronograma ajustado (+1 semana)');
+    });
+    document.getElementById('btn-recover-1d').addEventListener('click', () => {
+      state.offsetDays = Math.max(0, state.offsetDays - 1);
+      saveState();
+      renderAll();
+      toast('Cronograma adiantado (-1 dia)');
+    });
+    document.getElementById('btn-clear-offset').addEventListener('click', () => {
+      state.offsetDays = 0;
+      saveState();
+      renderAll();
+      toast('Atraso zerado');
+    });
+
+    // Kanban pills
+    document.querySelectorAll('.k-pill').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.kFilter = btn.dataset.kfilter;
+        document.querySelectorAll('.k-pill').forEach((b) => {
+          const active = b === btn;
+          const f = b.dataset.kfilter;
+          if (active) {
+            b.className = 'k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-100 text-zinc-950';
+          } else if (f === 'targetq') {
+            b.className = 'k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-teal-300 border border-teal-800 hover:bg-teal-950/60';
+          } else if (f === 'uniamerica') {
+            b.className = 'k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-indigo-300 border border-indigo-800 hover:bg-indigo-950/60';
+          } else if (f === 'puc') {
+            b.className = 'k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-amber-300 border border-amber-800 hover:bg-amber-950/60';
+          } else {
+            b.className = 'k-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-700 hover:bg-zinc-800';
+          }
+        });
+        renderKanban(computeSchedule());
+      });
+    });
+
+    // Cronograma pills
+    document.querySelectorAll('.c-pill').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.cProg = btn.dataset.cprog;
+        document.querySelectorAll('.c-pill').forEach((b) => {
+          const active = b === btn;
+          b.className = active
+            ? 'c-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-100 text-zinc-950'
+            : 'c-pill rounded-full px-3.5 py-1.5 text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-700 hover:bg-zinc-800';
+        });
+        renderCronograma(computeSchedule());
+      });
+    });
+
+    // Search & Add Todo
+    document.getElementById('todo-search').addEventListener('input', () => renderTodo(computeSchedule()));
+    document.getElementById('todo-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const input = document.getElementById('todo-title');
+      const title = input.value.trim();
+      if (!title) return;
+      state.items.unshift({
+        id: 'custom-' + Date.now(),
+        program: document.getElementById('todo-prog').value,
+        sub: 'Tarefa extra',
+        title,
+        hours: Number(document.getElementById('todo-hrs').value) || 0,
+        status: 'todo',
+        custom: true
+      });
+      input.value = '';
+      saveState();
+      renderAll();
+      toast('Tarefa adicionada');
+    });
+
+    // Delegated actions
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const { action, id, status } = btn.dataset;
+      if (action === 'set') setStatus(id, status);
+      if (action === 'cycle') cycleStatus(id);
+      if (action === 'del') removeCustom(id);
+    });
+
+    document.addEventListener('change', (e) => {
+      const cb = e.target.closest('[data-action="toggle"]');
+      if (!cb) return;
+      setStatus(cb.dataset.id, cb.checked ? 'done' : 'todo');
+    });
+
+    // Drag & Drop
+    document.querySelectorAll('.k-drop').forEach((col) => {
+      col.addEventListener('dragover', (e) => { e.preventDefault(); col.classList.add('drop-active'); });
+      col.addEventListener('dragleave', () => col.classList.remove('drop-active'));
+      col.addEventListener('drop', (e) => {
+        e.preventDefault();
+        col.classList.remove('drop-active');
+        if (state.dragId) {
+          setStatus(state.dragId, col.dataset.status);
+          toast('Cartão atualizado');
+        }
+      });
+    });
+
+    // Export & Reset
+    document.getElementById('btn-export').addEventListener('click', () => {
+      const blob = new Blob([JSON.stringify({
+        startDate: state.startDate,
+        offsetDays: state.offsetDays,
+        checkedDays: state.checkedDays,
+        items: state.items
+      }, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'plano-estudos-backup.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast('Backup exportado');
+    });
+
+    const modal = document.getElementById('reset-modal');
+    document.getElementById('btn-reset-open').addEventListener('click', () => {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+    document.getElementById('btn-reset-cancel').addEventListener('click', () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+    document.getElementById('btn-reset-confirm').addEventListener('click', () => {
+      state.startDate = DEFAULT_START;
+      state.offsetDays = 0;
+      state.checkedDays = {};
+      state.items = JSON.parse(JSON.stringify(INITIAL_ITEMS));
+      saveState();
+      renderAll();
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      toast('Progresso restaurado');
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>
